@@ -2,14 +2,20 @@
 
 A codemod script for jscodeshift that replaces arrow function components like this
 
-```javascript
-const MyComponent = (props : MyComponentProps) => { ... }
+```typescript
+const MyComponent = (props : MyComponentProps) => 
+{ 
+    // ...
+}
 ```
 
 to traditional function declarations
 
-```javascript
-function MyComponent(props : MyComponentProps) => { ... }
+```typescript
+function MyComponent(props : MyComponentProps)
+{  
+    // ...
+}
 ```
 
 This is done in order to provide a `name` property to the react components
