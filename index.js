@@ -33,6 +33,11 @@ function isInModuleScope(path)
    return true
 }
 
+function parentIsExportNamedDeclaration(path)
+{
+   return !!(path.parentPath && path.parentPath.node && path.parentPath.node.type === "ExportNamedDeclaration");
+}
+
 function isComponentDefinedAsArrowFunction(node)
 {
    return (
@@ -77,7 +82,9 @@ export default function transformer(file, api) {
 
          const components = []
 
-         const { comments } = path.node
+         const isExport = parentIsExportNamedDeclaration(path)
+
+         const { comments } = isExport ? path.parentPath.node : path.node
 
          const {declarations} = path.node;
          const remainingDeclarations = []
@@ -93,7 +100,7 @@ export default function transformer(file, api) {
             }
          }
 
-         const nodeAsRoot = j(path)
+         const nodeAsRoot = j(isExport ? path.parentPath : path)
 
          // convert collected components to function declarations and insert them after the variable declaration node
          for (let i = components.length - 1; i >= 0; i--)
@@ -101,7 +108,13 @@ export default function transformer(file, api) {
             const {name, fn, comments } = components[i];
             nodeAsRoot.insertAfter(p => {
 
-               const funcDecl = j.functionDeclaration(j.identifier(name), fn.params, fn.body);
+               let funcDecl = j.functionDeclaration(j.identifier(name), fn.params, fn.body);
+
+               if (isExport)
+               {
+                  funcDecl = j.exportNamedDeclaration(funcDecl)
+               }
+
                if (comments)
                {
                   // restore comments of declaration on first component
@@ -114,7 +127,12 @@ export default function transformer(file, api) {
          // replace or remove original declarations depending on whether we have declarators left.
          if (remainingDeclarations.length)
          {
-            nodeAsRoot.replaceWith(path => j.variableDeclaration("const", remainingDeclarations))
+             let newDecl = j.variableDeclaration("const", remainingDeclarations)
+             if (isExport)
+             {
+                 newDecl = j.exportNamedDeclaration(newDecl)
+             }
+             nodeAsRoot.replaceWith(path => newDecl)
          } else
          {
             nodeAsRoot.remove()
