@@ -86,7 +86,7 @@ export default function transformer(file, api) {
 
          const { comments } = isExport ? path.parentPath.node : path.node
 
-         const {declarations} = path.node;
+         const {declarations, kind} = path.node;
          const remainingDeclarations = []
          for (let i = 0; i < declarations.length; i++)
          {
@@ -127,7 +127,7 @@ export default function transformer(file, api) {
          // replace or remove original declarations depending on whether we have declarators left.
          if (remainingDeclarations.length)
          {
-             let newDecl = j.variableDeclaration("const", remainingDeclarations)
+             let newDecl = j.variableDeclaration(kind, remainingDeclarations)
              if (isExport)
              {
                  newDecl = j.exportNamedDeclaration(newDecl)
