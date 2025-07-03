@@ -18,5 +18,6 @@ React Developer Extension and other tools.
 
 Usage:
 
-npx @quinscape/ts-react-arrow-to-decl-codemod <jscodeshift-options> <files>
-
+Clone this repo to get the transform script or use 
+[jscodeshift with this URL as transform](https://raw.githubusercontent.com/quinscape/ts-react-arrow-to-decl-codemod/refs/heads/main/index.js) 
+(Might not be up-to-date if changes happened recently)

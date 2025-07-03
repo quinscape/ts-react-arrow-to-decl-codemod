@@ -8,7 +8,7 @@
 
 const negativeKeyList = ["loc", "start", "end", "indent", "lines", "tokens", "extra"]
 
-// Returns simplified JSON for give AST node and its children.
+// Returns simplified JSON for given AST node and its children.
 function jsonify(o)
 {
    return JSON.stringify(
