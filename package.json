@@ -1,0 +1,18 @@
+{
+  "name": "@quinscape/ts-react-arrow-to-decl-codemod",
+  "version": "0.0.1",
+  "description": "Jscodeshift based codemod script to convert react arrow function components to traditional function declarations in Typescript ",
+  "main": "index.js",
+  "repository": "git@github.com:quinscape/ts-react-arrow-to-decl-codemod.git",
+  "author": "Sven Helmberger <sven.helmberger@dataciders.com>",
+  "license": "Apache2.0",
+  "private": false,
+  "scripts": {
+    "test": "cross-env NODE_ENV=development mocha -R spec test/"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "jscodeshift": "^17.3.0",
+    "mocha": "^11.7.1"
+  }
+}
