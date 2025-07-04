@@ -1,0 +1,77 @@
+import * as React from "react";
+
+interface RootComponentProps {
+}
+
+/**
+ * Test
+ */
+function RootComponent(props : RootComponentProps) {
+    interface InnerComponentProps {
+    }
+    const InnerComponent = (props : InnerComponentProps) =>
+    {
+        return false
+    }
+
+    return false
+}
+
+interface RootComponent2Props {
+}
+
+/**
+ * DESC2
+ * @param props
+ * @constructor
+ */
+function RootComponent2(props: RootComponent2Props)
+{
+    interface InnerComponent2Props
+    {
+    }
+
+    const InnerComponent2 = (props: InnerComponent2Props) =>
+    {
+        return false;
+    };
+
+    return false;
+}
+
+class TestClass
+{
+    static method()
+    {
+        interface InnerComponent3Props
+        {
+        }
+
+        const InnerComponent3 = (props: InnerComponent3Props) =>
+        {
+            return false;
+        };
+    }
+    method()
+    {
+        interface InnerComponent4Props
+        {
+        }
+
+        const InnerComponent2 = (props: InnerComponent4Props) =>
+        {
+            return false;
+        };
+
+    }
+}
+interface VerticalRowCaptionProps
+{
+
+}
+
+/**
+ * TestDesc2
+ */
+export function VerticalRowHeader(props : VerticalRowCaptionProps) {
+}
