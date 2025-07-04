@@ -13,6 +13,7 @@
   "devDependencies": {
     "cross-env": "^7.0.3",
     "jscodeshift": "^17.3.0",
-    "mocha": "^11.7.1"
+    "mocha": "^11.7.1",
+    "shelljs": "^0.10.0"
   }
 }

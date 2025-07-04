@@ -70,7 +70,7 @@ export default function transformer(file, api) {
 
    let jFile = j(file.source);
 
-   //jFile.forEach(p => require("fs").writeFileSync("test.json", jsonify(p), "utf-8")); // Dump complete AST to "./test.json"
+   //jFile.forEach(p => require("fs").writeFileSync("test.json", jsonify(p), "utf8")); // Dump complete AST to "./test.json"
 
    return jFile
       .find(j.VariableDeclaration)
