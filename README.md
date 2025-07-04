@@ -3,7 +3,13 @@
 A codemod script for jscodeshift that replaces arrow function components like this
 
 ```typescript
-const MyComponent = (props : MyComponentProps) => 
+const MyComponent = (props) => 
+{ 
+    // ...
+}
+
+interface MyOtherComponentProps { name }
+const MyOtherComponent = ( { name } : MyOtherComponentProps) => 
 { 
     // ...
 }
@@ -12,8 +18,13 @@ const MyComponent = (props : MyComponentProps) =>
 to traditional function declarations
 
 ```typescript
-function MyComponent(props : MyComponentProps)
-{  
+function MyComponent(props) {
+    // ...
+}
+
+interface MyOtherComponentProps { name }
+function MyOtherComponent( { name } : MyOtherComponentProps) 
+{
     // ...
 }
 ```
