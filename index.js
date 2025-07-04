@@ -6,7 +6,7 @@
  * npx jscodeshift -t <location of this file> <tsx files to transform>
  */
 
-const negativeKeyList = ["loc", "start", "end", "indent", "lines", "tokens", "extra"]
+const negativeKeyList = ["loc", "start", "end", "indent", "lines", "tokens", "extra", "__childCache", "parentPath"]
 
 // Returns simplified JSON for given AST node and its children.
 function jsonify(o)
@@ -38,13 +38,30 @@ function parentIsExportNamedDeclaration(path)
    return !!(path.parentPath && path.parentPath.node && path.parentPath.node.type === "ExportNamedDeclaration");
 }
 
-function isComponentDefinedAsArrowFunction(node)
-{
-   return (
-      node.type === "ArrowFunctionExpression" &&
-      node.params.length === 1 &&
-      node.params[0].name === "props"
 
+function endsWithProps(s)
+{
+    const suffix = "Props"
+    const pos = s.lastIndexOf(suffix)
+    return pos === s.length - suffix.length
+}
+
+
+function isComponentDefinedAsArrowFunction(node, j)
+{
+   if (
+      node.type !== "ArrowFunctionExpression" ||
+      node.params.length !== 1
+   )
+   {
+       return false
+   }
+
+   const param = node.params[0];
+
+   return (
+         j.Identifier.check(param) && param.name === "props" ||
+         param.typeAnnotation && param.typeAnnotation.typeAnnotation && param.typeAnnotation.typeAnnotation.type === "TSTypeReference"  && endsWithProps(param.typeAnnotation.typeAnnotation.typeName.name)
    )
 }
 
@@ -70,7 +87,7 @@ export default function transformer(file, api) {
          for (let i = 0; i < declarations.length; i++)
          {
             const node = declarations[i];
-            if (isComponentDefinedAsArrowFunction(node.init))
+            if (isComponentDefinedAsArrowFunction(node.init, j))
             {
                return true;
             }
@@ -91,7 +108,7 @@ export default function transformer(file, api) {
          for (let i = 0; i < declarations.length; i++)
          {
             const node = declarations[i];
-            if (isComponentDefinedAsArrowFunction(node.init))
+            if (isComponentDefinedAsArrowFunction(node.init, j))
             {
                components.push({name: node.id.name, fn: node.init, comments: i === 0 ? comments : null });
             } else
@@ -142,5 +159,5 @@ export default function transformer(file, api) {
       .toSource()
 }
 
-module.exports.parser = "tsx"
+export const parser = "tsx"
 

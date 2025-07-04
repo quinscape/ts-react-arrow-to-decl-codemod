@@ -94,6 +94,23 @@ describe("React Arrow to Function Def", function(){
     });
 
 
+    it("supports inline destructuring", function()
+    {
+        assertChange(
+            // language=TypeScript JSX
+            `
+                interface MyComponentProps {name : String, value: Number }
+                const MyComponent = ({name, value}: MyComponentProps) => { return false }`,
+            // language=TypeScript JSX
+            `
+                interface MyComponentProps {name : String, value: Number }
+                function MyComponent({name, value}: MyComponentProps) { return false }`
+        );
+
+        //assertUnchanged("const a = 1")
+    });
+
+
     it("only transforms top-level declarations", function()
     {
 

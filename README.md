@@ -18,9 +18,11 @@ function MyComponent(props : MyComponentProps)
 }
 ```
 
-This is done in order to provide a `name` property to the react components
-which is used in component stack traces and within the 
-React Developer Extension and other tools.
+To qualify for transformation, the arrow function must have a single argument named `props` or refer to a type reference
+whose name ends in `Props`.
+
+This is done in order to provide a `name` property to the react components which is used in component stack traces and 
+within the React Developer Extension and other tools.
 
 Usage:
 
