@@ -65,7 +65,6 @@ describe("React Arrow to Function Def", function(){
              */
             function MyComponent(props: MyComponentProps) { return false }`
         );
-
     });
 
 
@@ -164,4 +163,49 @@ describe("React Arrow to Function Def", function(){
         )
     });
 
+    it("supports multiple declarations", function()
+    {
+        // even if it does not make that much sense, we support multiple declarations
+        // assertChange(
+        //     // language=TypeScript
+        //     `
+        //     interface MyComponentProps {}
+        //
+        //     /**
+        //      * CCC
+        //      */
+        //     const MyComponent = (props: MyComponentProps) => { return false }, a=1`,
+        //     // language=TypeScript
+        //     `
+        //     interface MyComponentProps {}
+        //
+        //     const a=1;
+        //
+        //     /**
+        //      * CCC
+        //      */
+        //     function MyComponent(props: MyComponentProps) { return false }`
+        // );
+        assertChange(
+            // language=TypeScript
+            `
+            interface MyComponentProps {}
+
+            /**
+             * DDD
+             */
+            const b=2,MyComponent = (props: MyComponentProps) => { return false }`,
+            // language=TypeScript
+            `
+            interface MyComponentProps {}
+
+            /**
+             * DDD
+             */
+            const b=2;
+
+            function MyComponent(props: MyComponentProps) { return false }`
+        );
+
+    });
 });

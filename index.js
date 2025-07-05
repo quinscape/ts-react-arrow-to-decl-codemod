@@ -105,13 +105,19 @@ export default function transformer(file, api) {
 
          const {declarations, kind} = path.node;
          const remainingDeclarations = []
+          let firstIsComponent = false
          for (let i = 0; i < declarations.length; i++)
          {
             const node = declarations[i];
             if (isComponentDefinedAsArrowFunction(node.init, j))
             {
-               components.push({name: node.id.name, fn: node.init, comments: i === 0 ? comments : null });
-            } else
+                components.push({name: node.id.name, fn: node.init});
+                if (i === 0)
+                {
+                    firstIsComponent = true
+                }
+            }
+            else
             {
                remainingDeclarations.push(node);
             }
@@ -122,7 +128,7 @@ export default function transformer(file, api) {
          // convert collected components to function declarations and insert them after the variable declaration node
          for (let i = components.length - 1; i >= 0; i--)
          {
-            const {name, fn, comments } = components[i];
+            const { name, fn } = components[i];
             nodeAsRoot.insertAfter(p => {
 
                let funcDecl = j.functionDeclaration(j.identifier(name), fn.params, fn.body);
@@ -132,7 +138,7 @@ export default function transformer(file, api) {
                   funcDecl = j.exportNamedDeclaration(funcDecl)
                }
 
-               if (comments)
+               if (comments && i === 0 && firstIsComponent)
                {
                   // restore comments of declaration on first component
                   funcDecl.comments = comments;
@@ -149,6 +155,11 @@ export default function transformer(file, api) {
              {
                  newDecl = j.exportNamedDeclaration(newDecl)
              }
+             if (!firstIsComponent && comments)
+             {
+                 newDecl.comments = comments;
+             }
+
              nodeAsRoot.replaceWith(path => newDecl)
          } else
          {
